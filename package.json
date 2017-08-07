@@ -22,13 +22,9 @@
     "url": "git+https://github.com/Jimmy02020/find-in.git"
   },
   "keywords": [
-    "javascript",
-    "nodejs",
-    "node",
-    "node-js",
-    "nodejs-modules",
-    "node-modules",
     "fs",
+    "file",
+    "find",
     "stream",
     "finder"
   ],
