@@ -1,0 +1,23 @@
+# lib-build
+lib
+
+# npm_packages
+npm_packages
+
+# coverage
+coverage
+
+# Dependency directory
+node_modules
+
+# package-lock
+package-lock.json
+
+# Optional npm cache directory
+.npm
+
+*.log
+npm-debug.log*
+
+# .env
+.env
