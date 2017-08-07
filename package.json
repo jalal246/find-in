@@ -4,7 +4,8 @@
   "description": "Searching Text In File For Node.",
   "main": "lib/index.js",
   "directories": {
-    "lib": "lib"
+    "lib": "lib",
+    "test": "test"
   },
   "scripts": {
     "test": "mocha  --compilers js:babel-core/register test",

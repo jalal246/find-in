@@ -18,18 +18,12 @@ const isStr = str => typeof str === 'string';
 // check if input is regex
 const isReg = reg => typeof reg === 'object';
 
-// const regexize = str =>
 /**
-  * returns info for sym key
   *
   * @param {string} dir  - directory.
-  * @callback {Requester~requestCallback}
+  * @param {array} arrayOfReg
+  * @callback {error~object}
   *
-  * @returns
-  * @typedef {Object} data
-  * @property {number} - iat, issued at
-  * @property {number} - exp, expire at
-  * @property {string} - key
   */
 const find = (dir, arrayOfReg, cb) => {
   // validate callback, else every error will be handled in callback error
