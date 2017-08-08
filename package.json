@@ -1,6 +1,6 @@
 {
   "name": "find-in",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Searching Text In File For Node.",
   "main": "lib/index.js",
   "directories": {
@@ -8,8 +8,10 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha  --compilers js:babel-core/register test",
-    "test:w": "mocha  --compilers js:babel-core/register test -w",
+    "test": "mocha  --compilers js:babel-core/register --recursive test",
+    "test:general": "mocha  --compilers js:babel-core/register test/general.test.js -w",
+    "test:longReg": "mocha  --compilers js:babel-core/register test/longReg.test.js -w",
+    "test:chunkBoundaries": "mocha  --compilers js:babel-core/register test/chunkBoundaries.test.js -w",
     "test:cov": "istanbul cover node_modules/mocha/bin/_mocha --  --compilers js:babel-core/register test",
     "check:cov": "istanbul check-coverage --root coverage --statement 90 --branch 75 --function 80 --line 95",
     "report:cov": "cat ./coverage/lcov.info | codecov",

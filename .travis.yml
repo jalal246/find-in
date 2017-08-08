@@ -8,7 +8,6 @@ branches:
 notifications:
   email: false
 node_js:
-  - '5'
   - '7'
   - '6'
 before_script:
