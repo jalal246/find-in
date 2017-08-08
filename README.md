@@ -78,7 +78,7 @@ find({ path: '/path1/path2/fileName', request: req }, (err, report) => {
 Or you can check specific result as following.
 
 ```javascript
-find({ dir: '/path1/path2/fileName', request: [ph0, ph1, p2, ph3] }, (err, report) => {
+find({ path: '/path1/path2/fileName', request: [ph0, ph1, p2, ph3] }, (err, report) => {
   if(report[2].isFound){
     console.log('p2 was found');
     // do something
