@@ -50,33 +50,38 @@ describe('read and replace stream function', () => {
     it('creates file to continue validation test', () => {
       fs.closeSync(fs.openSync(fileExist, 'w'));
     });
+    it('throws error empty args', () => {
+      // console.log(find());
+      expect(() => find()).to.throw(Error);
+    });
     it('throws error for invalid callback function', () => {
       // console.log(find(fwithInfoSpreaded, [], 'test'));
       expect(() => find(fileExist, [], 'test')).to.throw(Error);
     });
     describe('return callback error msg callback error', () => {
       it('for invalid directory', (done) => {
-        find('fileExist', '', (err) => {
+        find({ path: 'fileExist' }, (err) => {
           // console.log(err);
           expect(err).to.be.an('error');
           done();
         });
       });
       it('for invalid array of objects', (done) => {
-        find(fileExist, '', (err) => {
+        find({ path: fileExist }, (err) => {
+          // console.log(err);
           expect(err).to.be.an('error');
           done();
         });
       });
       it('for empty array of objects', (done) => {
-        find(fileExist, [], (err) => {
+        find({ path: fileExist, request: [] }, (err) => {
           // console.log(err);
           expect(err).to.be.an('error');
           done();
         });
       });
       it('for invalid reg [regex or string]', (done) => {
-        find(fileExist, [8], (err) => {
+        find({ path: fileExist, request: [8] }, (err) => {
           // console.log(err);
           expect(err).to.be.an('error');
           done();
@@ -124,7 +129,7 @@ describe('read and replace stream function', () => {
       ws1.end();
     });
     it('replaces spreaded strings', (done) => {
-      find(fwithInfoSpreaded, request, (err, report) => {
+      find({ path: fwithInfoSpreaded, request }, (err, report) => {
         // console.log(report);
         expect(report[0]).to.deep.equal({
           isFound: true, reg: new RegExp(LABLE1, 'g'), match: LABLE1,
@@ -147,7 +152,7 @@ describe('read and replace stream function', () => {
       ws2.end();
     });
     it('returns isFound false beacuse of not matching', (done) => {
-      find(fwithoutInfo, request, (err, report) => {
+      find({ path: fwithoutInfo, request }, (err, report) => {
         expect(report[0]).to.deep.equal({
           isFound: false, reg: new RegExp(LABLE1, 'g'), match: null,
         });
@@ -181,7 +186,7 @@ describe('read and replace stream function', () => {
       ws3.end();
     });
     it('returns isFound false beacuse of not matching', (done) => {
-      find(fwitInfoStack, request, (err, report) => {
+      find({ path: fwitInfoStack, request, join: 2 }, (err, report) => {
         expect(report[0]).to.deep.equal({
           isFound: true, reg: new RegExp(LABLE1, 'g'), match: LABLE1,
         });
