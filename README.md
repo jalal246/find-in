@@ -30,22 +30,22 @@ $ npm install find-in
 Syntax
 -------
 
-### find(path, regex[], callback)
+### find(options, callback)
 
-``path`` string.
+`options`:
 
-``regex[]`` array of regex that will be matched in file.
+* `path` file path,
+* `request` array of regex that will be matched in file
+* `encoding`  read stream encoding (default: `utf8`)
+* `join` number of chunk combined (default: 3), increasing the number will widen the matching chunk boundaries
 
-The callback gets two arguments ``(err, report)``.
+The callback gets two arguments `(err, report)`.
 
-``report`` array of objects. Each element contains three objects: ``{isFound, reg, match}``
+`report`  array of objects. Each element contains three objects:
 
- ``isFound`` searching result
-
-``reg`` regex sent
-
- ``match`` matching result
-
+* `isFound` searching result
+* `reg` regex sent
+* `match` matching result
 
 Using find-in
 ----------
@@ -53,13 +53,13 @@ Using find-in
 ```javascript
 const find = require('find-in')
 
-// let's create some phrases to search for it in our file.
-const phrases = [
+// let's create some request to search for it in our file.
+const req = [
   /old/g,
   /new/g,
 ]
 
-find('/path1/path2/fileName', phrases, (err, report) => {
+find({ path: '/path1/path2/fileName', request: req }, (err, report) => {
   //
   [
     {
@@ -78,7 +78,7 @@ find('/path1/path2/fileName', phrases, (err, report) => {
 Or you can check specific result as following.
 
 ```javascript
-find('/path1/path2/fileName', [ph0, ph1, p2, ph3], (err, report) => {
+find({ dir: '/path1/path2/fileName', request: [ph0, ph1, p2, ph3] }, (err, report) => {
   if(report[2].isFound){
     console.log('p2 was found');
     // do something
@@ -88,7 +88,6 @@ find('/path1/path2/fileName', [ph0, ph1, p2, ph3], (err, report) => {
   }
 });
 ```
-
 
 Tests
 -----
