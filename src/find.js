@@ -66,26 +66,22 @@ const find = (opt, cb) => {
       encoding: opts.encoding || 'utf8',
     });
     readStream.on('error', readErr => closeReturnError(fd, readErr, cb));
-    const combinedChunkQueue = []; // chunck holder
+    const chunkQueue = []; // chunck holder
     let combinedChunk; // combined chunk
-    const maxRounds = opts.join || 3; // max rounds allowed to hold chunk
-    let currentRound = 0;
+    const maxJoins = opts.join || 3; // max rounds allowed to hold chunk
     readStream.on('data', (chunk) => {
-      // handling combined chunk index.
-      if (currentRound === maxRounds) {
-        // reset index
-        currentRound = 0;
+      // forming queue
+      if (chunkQueue.length <= maxJoins) chunkQueue.push(chunk);
+      else {
         // dump the first element in queue
-        combinedChunkQueue.shift();
-      } else {
-        currentRound += 1;
+        chunkQueue.shift();
         // add new chunck
-        combinedChunkQueue.push(chunk);
+        chunkQueue.push(chunk);
       }
       // flush combined chunk
       combinedChunk = null;
       // compose combined chunk
-      for (let j = 0; j < combinedChunkQueue.length; j += 1) combinedChunk += combinedChunkQueue[j];
+      for (let j = 0; j < chunkQueue.length; j += 1) combinedChunk += chunkQueue[j];
       // matching process
       for (let i = 0; i < arrayLen; i += 1) {
         if (isFlags[i] === null) isFlags[i] = combinedChunk.match(opts.request[i]);
