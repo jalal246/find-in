@@ -71,7 +71,7 @@ const find = (opt, cb) => {
     const maxJoins = opts.join || 3; // max rounds allowed to hold chunk
     readStream.on('data', (chunk) => {
       // forming queue
-      if (chunkQueue.length <= maxJoins) chunkQueue.push(chunk);
+      if (chunkQueue.length < maxJoins) chunkQueue.push(chunk);
       else {
         // dump the first element in queue
         chunkQueue.shift();
