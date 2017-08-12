@@ -17,7 +17,7 @@
     "report:cov": "cat ./coverage/lcov.info | codecov",
     "prebuild": "rimraf lib",
     "build": "babel --out-dir lib src",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
