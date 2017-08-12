@@ -1,6 +1,6 @@
 {
   "name": "find-in",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Searching Text In File For Node.",
   "main": "lib/index.js",
   "directories": {
