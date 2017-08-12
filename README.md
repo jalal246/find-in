@@ -32,20 +32,20 @@ Syntax
 
 ### find(options, callback)
 
-`options`:
+`options`
 
 * `path` file path,
-* `request` array of regex that will be matched in file
+* `request` array of [regex](https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions) that will be matched in file
 * `encoding`  read stream encoding (default: `utf8`)
-* `join` number of chunk combined (default: 3), increasing the number will widen the matching chunk boundaries
+* `join` number of chunk combined (default: 2), increasing the number will widen the matching chunk boundaries
 
 The callback gets two arguments `(err, report)`.
 
-`report`  array of objects. Each element contains three objects:
+`report`  An array of objects. Each element contains three objects:
 
 * `isFound` searching result
 * `reg` regex sent
-* `match` matching result
+* `match` matching result. An array if there are results otherwise returns null. for more see [String.prototype.match()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match)
 
 Using find-in
 ----------
@@ -65,7 +65,7 @@ find({ path: '/path1/path2/fileName', request: req }, (err, report) => {
     {
       isFound: true,
       reg:/old/g,
-      match: old // the result of matching
+      match: ['old'] // the result of matching
     },
     { isFound: false, // not found so it wasn't changed
       reg: /new/g,

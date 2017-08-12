@@ -132,7 +132,7 @@ describe('read and replace stream function', () => {
       find({ path: fwithInfoSpreaded, request }, (err, report) => {
         // console.log(report);
         expect(report[0]).to.deep.equal({
-          isFound: true, reg: new RegExp(LABLE1, 'g'), match: LABLE1,
+          isFound: true, reg: new RegExp(LABLE1, 'g'), match: [LABLE1],
         });
         done();
       });
@@ -188,7 +188,7 @@ describe('read and replace stream function', () => {
     it('returns isFound false beacuse of not matching', (done) => {
       find({ path: fwitInfoStack, request, join: 2 }, (err, report) => {
         expect(report[0]).to.deep.equal({
-          isFound: true, reg: new RegExp(LABLE1, 'g'), match: LABLE1,
+          isFound: true, reg: new RegExp(LABLE1, 'g'), match: [LABLE1],
         });
         done();
       });

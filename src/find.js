@@ -68,7 +68,7 @@ const find = (opt, cb) => {
     readStream.on('error', readErr => closeReturnError(fd, readErr, cb));
     const chunkQueue = []; // chunck holder
     let combinedChunk; // combined chunk
-    const maxJoins = opts.join || 3; // max rounds allowed to hold chunk
+    const maxJoins = opts.join || 2; // max rounds allowed to hold chunk
     readStream.on('data', (chunk) => {
       // forming queue
       if (chunkQueue.length < maxJoins) chunkQueue.push(chunk);
@@ -84,7 +84,9 @@ const find = (opt, cb) => {
       for (let j = 0; j < chunkQueue.length; j += 1) combinedChunk += chunkQueue[j];
       // matching process
       for (let i = 0; i < arrayLen; i += 1) {
-        if (isFlags[i] === null) isFlags[i] = combinedChunk.match(opts.request[i]);
+        if (isFlags[i] === null) {
+          isFlags[i] = chunk.match(opts.request[i]) || combinedChunk.match(opts.request[i]);
+        }
       }
       if (!isFlags.includes(null)) isFoundAll = true;
       if (isFoundAll) {
@@ -99,7 +101,7 @@ const find = (opt, cb) => {
         report[i] = {
           isFound: isFlags[i] !== null,
           reg: opts.request[i],
-          match: isFlags[i] && isFlags[i][0],
+          match: isFlags[i],
         };
       }
       return cb(null, report);
