@@ -16,7 +16,7 @@
     "check:cov": "istanbul check-coverage --root coverage --statement 90 --branch 75 --function 80 --line 95",
     "report:cov": "cat ./coverage/lcov.info | codecov",
     "prebuild": "rimraf lib",
-    "build": "babel --out-dir lib src  --no-comments",
+    "build": "babel --out-dir lib src",
     "prepublishOnly": "npm test && npm run build"
   },
   "repository": {
