@@ -1,80 +1,64 @@
-import fs from "fs";
+const fs = require("fs");
 
-// function to generates error as you see.
-const errUnit = (errMsg) => new Error(`\x1b[33m${errMsg}\x1b[0m`);
+const fsPromises = fs.promises;
 
-// since all the validation happens after opening the file.
-const closeReturnError = (fd, errMsg, cb) =>
-  fs.close(fd, () => cb(errUnit(errMsg)));
+function err(errMsg) {
+  throw TypeError(`\x1b[33m${errMsg}\x1b[0m`);
+}
 
-const cbMsg = "Invalid callback function.";
-const arrOfRegMsg = "Invalid array type";
-const arrOfRegEmptyMsg = "Empty array of objects";
-const regMsg = "Invalid regex at: ";
+function isReg(reg) {
+  return typeof reg === "object";
+}
 
-// gets the regex length
-const regLen = (regex) => regex.length;
+function isStr(str) {
+  return typeof str === "string";
+}
 
-// check if input is string
-const isStr = (str) => typeof str === "string";
+async function find(opts) {
+  if (!opts || !Array.isArray(opts.request)) {
+    err(`Invalid input`);
+  }
 
-// check if input is regex
-const isReg = (reg) => typeof reg === "object";
+  const lengthRequest = opts.request.length;
 
-/**
- *
- * @param {Object} opt - options
- * @property {string} - path, directory
- * @property {array} - requestز array contains the regex
- * @property {string} - encoding, type of encoding used for reading
- * @property {number} - rounds, chunk boundaries
- *
- * @callback {error~object}
- * @property {boolean} - isFound
- * @property {string|object} - reg
- * @property {string} - match,
- *
- */
-const find = (opt, cb) => {
-  const opts = opt || {};
-  // validate callback, else every error will be handled in callback error
-  if (typeof cb !== "function") throw errUnit(cbMsg);
-  // validate file.
-  return fs.open(opts.path, "r", (openErr, fd) => {
-    if (openErr) return cb(openErr);
-    // validate arrayOfReg
-    if (!(opts.request instanceof Array))
-      return closeReturnError(fd, arrOfRegMsg, cb);
-    // validate arrayOfReg length
-    const arrayLen = regLen(opts.request);
-    if (arrayLen === 0) return closeReturnError(fd, arrOfRegEmptyMsg, cb);
-    // validate the objects inside.
-    for (let i = 0; i < arrayLen; i += 1) {
-      // validate regMsg in find
-      if (!isReg(opts.request[i]) && !isStr(opts.request[i])) {
-        return closeReturnError(fd, regMsg + opts.request[i], cb);
-      }
+  for (let i = 0; i < lengthRequest; i += 1) {
+    // validate request
+    if (!isReg(opts.request[i]) && !isStr(opts.request[i])) {
+      err(`Invalid request`);
+      break;
     }
-    // Everything is good ****************************************************
-    // create array of flags
-    const isFlags = [];
-    // init arry with default false.
-    for (let i = 0; i < arrayLen; i += 1) isFlags[i] = null; // flags
-    let isFoundAll = false;
-    const readStream = fs.createReadStream(opts.path, {
-      encoding: opts.encoding || "utf8",
-    });
-    readStream.on("error", (readErr) => closeReturnError(fd, readErr, cb));
-    const chunkQueue = []; // chunck holder
-    let combinedChunk; // combined chunk
-    const maxJoins = opts.join || 2; // max rounds allowed to hold chunk
+  }
+
+  if (!opts.path) {
+    err(`Invalid path`);
+  }
+
+  /**
+   * End of checking. Everything is good.
+   */
+  const fileHandle = await fsPromises.open(opts.path, "r");
+
+  const isFlags = [];
+  for (let i = 0; i < lengthRequest; i += 1) isFlags[i] = null; // flags
+
+  let isFoundAll = false;
+
+  const readStream = fs.createReadStream(opts.path, {
+    encoding: opts.encoding || "utf8",
+  });
+
+  const chunkQueue = []; // chunk holder
+  let combinedChunk; // combined chunk
+  const maxJoins = opts.join || 2; // max rounds allowed to hold chunk
+
+  return new Promise((resolve, reject) => {
     readStream.on("data", (chunk) => {
-      // forming queue
-      if (chunkQueue.length < maxJoins) chunkQueue.push(chunk);
-      else {
+      if (chunkQueue.length < maxJoins) {
+        chunkQueue.push(chunk);
+      } else {
         // dump the first element in queue
         chunkQueue.shift();
-        // add new chunck
+        // add new chunk
         chunkQueue.push(chunk);
       }
       // flush combined chunk
@@ -83,7 +67,7 @@ const find = (opt, cb) => {
       for (let j = 0; j < chunkQueue.length; j += 1)
         combinedChunk += chunkQueue[j];
       // matching process
-      for (let i = 0; i < arrayLen; i += 1) {
+      for (let i = 0; i < lengthRequest; i += 1) {
         if (isFlags[i] === null) {
           isFlags[i] =
             chunk.match(opts.request[i]) ||
@@ -97,20 +81,24 @@ const find = (opt, cb) => {
         readStream.emit("end");
       }
     });
-    return readStream.on("end", () =>
-      fs.close(fd, () => {
-        const report = [];
-        for (let i = 0; i < arrayLen; i += 1) {
-          report[i] = {
-            isFound: isFlags[i] !== null,
-            reg: opts.request[i],
-            match: isFlags[i],
-          };
-        }
-        return cb(null, report);
-      })
-    );
-  });
-};
 
-export default find;
+    readStream.on("error", (error) => reject(error));
+
+    readStream.on("end", async () => {
+      const report = [];
+      await fileHandle.close();
+
+      for (let i = 0; i < lengthRequest; i += 1) {
+        report[i] = {
+          isFound: isFlags[i] !== null,
+          reg: opts.request[i],
+          match: isFlags[i],
+        };
+      }
+
+      resolve(report);
+    });
+  });
+}
+
+module.exports = find;

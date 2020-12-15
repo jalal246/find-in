@@ -1,23 +1,36 @@
 {
   "name": "find-in",
   "version": "0.1.4",
+  "main": "src/find.js",
+  "repository": "https://github.com/jalal246/find-in.git",
+  "author": "Jalal Maskoun <jimmy002020@gmail.com>",
+  "license": "MIT",
   "scripts": {
     "test": "jest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Jimmy02020/find-in.git"
-  },
   "keywords": [
-    "backend",
     "fs",
+    "json",
     "file",
-    "find",
-    "stream",
-    "finder"
+    "directory",
+    "recursive",
+    "read",
+    "builderz",
+    "get-info",
+    "package-sorter",
+    "corename",
+    "build",
+    "folo",
+    "dflex",
+    "bundle",
+    "scripts",
+    "monorepo",
+    "production",
+    "utility",
+    "tools"
   ],
   "files": [
-    "lib",
+    "src",
     "README.md"
   ],
   "devDependencies": {

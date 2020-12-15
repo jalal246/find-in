@@ -3,7 +3,7 @@ const path = require("path");
 
 const faker = require("faker");
 
-const find = require("../src/find-copy");
+const find = require("../src/find");
 
 const fileWithoutInfo = path.join(__dirname, ".env.no.info.test");
 const fileWithStackedData = path.join(__dirname, "info.stk.docx");
