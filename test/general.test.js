@@ -5,16 +5,15 @@ const faker = require("faker");
 
 const find = require("../src/find-copy");
 
-const fileExist = path.join(__dirname, "tempFileExistForTest.txt");
 const fileWithoutInfo = path.join(__dirname, ".env.no.info.test");
-const fwitInfoStack = path.join(__dirname, "info.stk.docx");
+const fileWithStackedData = path.join(__dirname, "info.stk.docx");
 const fileWithInfoSpread = path.join(__dirname, "info.sp.txt");
 
 const LABEL1 = "hi guys!";
 const LABEL2 = "what is up?";
 const LABEL3 = "is everything ok?";
 const LABEL4 = "good, glad to here that from you";
-const LABEL5 = "dont worry";
+const LABEL5 = "don't worry";
 const LABEL6 = "this test";
 const LABEL7 = "cannot be last forever";
 const LABEL8 = "right?";
@@ -126,68 +125,56 @@ describe("Testing data doesn't exist in the file", () => {
     fs.unlinkSync(fileWithoutInfo);
   });
 
-  //   it("returns isFound false beacuse of not matching", (done) => {})
+  it("returns isFound false because there's not matching", async () => {
+    const report = await find({ path: fileWithoutInfo, request });
+
+    expect(report[0]).toStrictEqual({
+      isFound: false,
+      reg: new RegExp(LABEL1, "g"),
+      match: null,
+    });
+
+    expect(report[7]).toStrictEqual({
+      isFound: false,
+      reg: new RegExp(`${LABEL8}`),
+      match: null,
+    });
+
+    expect(report).toMatchSnapshot();
+  });
 });
 
-// describe("testing in not matching info file", () => {
-//   it("create file with fake info", () => {
-//     // init file with params spreaded.
-//     const ws2 = fs.createWriteStream(ffileWithoutInfo);
-//     for (let i = 0; i < 10000; i += 1) {
-//       ws2.write(`${faker.lorem.paragraphs()}\n`);
-//     }
-//     ws2.end();
-//   });
-//   it("returns isFound false beacuse of not matching", (done) => {
-//     find({ path: ffileWithoutInfo, request }, (err, report) => {
-//       expect(report[0]).to.deep.equal({
-//         isFound: false,
-//         reg: new RegExp(LABLE1, "g"),
-//         match: null,
-//       });
-//       expect(report[7]).to.deep.equal({
-//         isFound: false,
-//         reg: new RegExp(`${LABLE8}`),
-//         match: null,
-//       });
-//       done();
-//     });
-//   });
-//   it("delete test file", (done) => {
-//     fs.unlinkSync(ffileWithoutInfo);
-//     done();
-//   });
-// });
-// describe("testing in stack info file", () => {
-//   it("create file with fake info", () => {
-//     // init file with params spreaded.
-//     const ws3 = fs.createWriteStream(fwitInfoStack);
-//     ws3.write(` ${LABLE1} `);
-//     ws3.write(` ${LABLE2} `);
-//     ws3.write(` ${LABLE3} `);
-//     ws3.write(` ${LABLE4} `);
-//     ws3.write(` ${LABLE5} `);
-//     ws3.write(` ${LABLE6} `);
-//     ws3.write(` ${LABLE7} `);
-//     ws3.write(` ${LABLE8} `);
-//     ws3.write(` ${LABLE9} `);
-//     for (let i = 0; i < 10000; i += 1) {
-//       ws3.write(`${faker.lorem.paragraphs()}\n`);
-//     }
-//     ws3.end();
-//   });
-//   it("returns isFound false beacuse of not matching", (done) => {
-//     find({ path: fwitInfoStack, request, join: 2 }, (err, report) => {
-//       expect(report[0]).to.deep.equal({
-//         isFound: true,
-//         reg: new RegExp(LABLE1, "g"),
-//         match: [LABLE1],
-//       });
-//       done();
-//     });
-//   });
-//   it("delete test file", (done) => {
-//     fs.unlinkSync(fwitInfoStack);
-//     done();
-//   });
-// });
+describe("Testing stacked data in the file", () => {
+  beforeAll(() => {
+    const ws3 = fs.createWriteStream(fileWithStackedData);
+    ws3.write(` ${LABEL1} `);
+    ws3.write(` ${LABEL2} `);
+    ws3.write(` ${LABEL3} `);
+    ws3.write(` ${LABEL4} `);
+    ws3.write(` ${LABEL5} `);
+    ws3.write(` ${LABEL6} `);
+    ws3.write(` ${LABEL7} `);
+    ws3.write(` ${LABEL8} `);
+    ws3.write(` ${LABEL9} `);
+    for (let i = 0; i < 10000; i += 1) {
+      ws3.write(`${faker.lorem.paragraphs()}\n`);
+    }
+    ws3.end();
+  });
+
+  afterAll(() => {
+    fs.unlinkSync(fileWithStackedData);
+  });
+
+  it("returns isFound false because there's not matching", async () => {
+    const report = await find({ path: fileWithStackedData, request, join: 2 });
+
+    expect(report[0]).toStrictEqual({
+      isFound: true,
+      reg: new RegExp(LABEL1, "g"),
+      match: [LABEL1],
+    });
+
+    expect(report).toMatchSnapshot();
+  });
+});
