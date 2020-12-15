@@ -1,6 +1,6 @@
 {
   "name": "find-in",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "main": "src/find.js",
   "repository": "https://github.com/jalal246/find-in.git",
   "author": "Jalal Maskoun <jimmy002020@gmail.com>",
