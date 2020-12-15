@@ -15,6 +15,7 @@
     "directory",
     "recursive",
     "read",
+    "textics",
     "builderz",
     "get-info",
     "package-sorter",
