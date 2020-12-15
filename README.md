@@ -14,20 +14,18 @@ It creates read [stream](https://nodejs.org/api/stream.html) to read from the ta
 
 ## find(options)
 
-`options`
+`options` object contains:
 
-- `path` file path,
-- `request` array of [regex](https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions) that will be matched in file
-- `encoding` read stream encoding (default: `utf8`)
-- `join` number of chunk combined (default: 2), increasing the number will widen the matching chunk boundaries
+- `path: string` file path,
+- `request: array` array of [regex](https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions) that will be matched in file
+- `encoding:? string` read stream encoding (default: `utf8`)
+- `join: string` number of chunk combined (default: 2), increasing the number will widen the matching chunk boundaries
 
-The callback gets two arguments `(err, report)`.
+The results is promise contains `report: array` An array of objects. Each element contains three keys:
 
-`report` An array of objects. Each element contains three objects:
-
-- `isFound` searching result
-- `reg` regex sent
-- `match` matching result. An array if there are results otherwise returns null. for more see [String.prototype.match()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match)
+- `isFound: Boolean` search result
+- `reg: string` regex sent in request
+- `match: array` matching result. An array if there are results otherwise returns null. for more see [String.prototype.match()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match)
 
 ### Examples
 
@@ -77,6 +75,24 @@ if (report[2].isFound) {
 ```sh
 yarn test
 ```
+
+### Related projects
+
+- [textics](https://github.com/jalal246/textics-stream) &
+  [textics-stream](https://github.com/jalal246/textics) - counts lines, words, chars and spaces for a given string
+
+- [packageSorter](https://github.com/jalal246/packageSorter) - Sorting packages
+  for monorepos production.
+
+- [builderz](https://github.com/jalal246/builderz) - Building your project with zero config.
+
+- [corename](https://github.com/jalal246/corename) - Extracts package name.
+
+- [get-info](https://github.com/jalal246/get-info) - Utility functions for
+  projects production.
+
+- [move-position](https://github.com/jalal246/move-position) - Moves element in
+  given array form index-A to index-B
 
 ## License
 
