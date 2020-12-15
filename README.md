@@ -79,7 +79,7 @@ yarn test
 ### Related projects
 
 - [textics](https://github.com/jalal246/textics-stream) &
-  [textics-stream](https://github.com/jalal246/textics) - counts lines, words, chars and spaces for a given string
+  [textics-stream](https://github.com/jalal246/textics) - counts lines, words, chars and spaces for a given string.
 
 - [packageSorter](https://github.com/jalal246/packageSorter) - Sorting packages
   for monorepos production.
@@ -92,7 +92,7 @@ yarn test
   projects production.
 
 - [move-position](https://github.com/jalal246/move-position) - Moves element in
-  given array form index-A to index-B
+  given array form index-A to index-B.
 
 ## License
 
