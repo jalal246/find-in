@@ -55,19 +55,19 @@ const report = await find({ path: "/path1/path2/fileName", request: req });
 // ];
 ```
 
-Or you can check specific result as following.
+Or you can check a specific result as following.
 
 ```js
 const report = await find({
   path: "/path1/path2/fileName",
-  request: [ph0, ph1, p2, ph3],
+  request: [phrase0, phrase1, phrase2, phrase3],
 });
 
 if (report[2].isFound) {
-  console.log("p2 was found");
+  console.log("found phrase2!");
   // do something
 } else {
-  console.log("not found");
+  console.log("phrase2 is not found!");
   // do something else
 }
 ```
