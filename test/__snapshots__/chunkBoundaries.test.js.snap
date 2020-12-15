@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing to match regex on chunk boundaries / issues:2 returns isFound true 1`] = `
+Array [
+  Object {
+    "isFound": true,
+    "match": Array [
+      "BAAAAAAAAAAB",
+    ],
+    "reg": /BA\\*B/,
+  },
+]
+`;

@@ -1,102 +1,99 @@
-[![NPM](https://nodei.co/npm/find-in.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/find-in/)
+# find-in
 
-[![Travis](https://img.shields.io/travis/rust-lang/rust.svg)](https://travis-ci.org/Jimmy02020/find-in)
-[![Codecov](https://img.shields.io/codecov/c/github/codecov/example-python.svg)](https://codecov.io/gh/Jimmy02020/find-in)
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/Jimmy02020/find-in/blob/master/LICENSE)
+> Node text search in files
 
-Overview
---------
-``find-in`` is file text-searching for [node](https://nodejs.org/en/).
-
-How it works?
---------
-
-Simply, ``find-in`` creates read [stream](https://nodejs.org/api/stream.html) to read from the target file in chunks, matches the chunks using [match](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/match) method returns an array of objects contains the final results in callback function.
-
-Getting Started
----------------
-
-clone the repo:
-```sh
-git clone git@github.com:jimmy02020/find-in.git
-cd find-in
+```bash
+npm install find-in
 ```
 
-Using npm:
-```sh
-$ npm install find-in
-```
+## How it works?
 
-Syntax
--------
+It creates read [stream](https://nodejs.org/api/stream.html) to read from the target file in chunks, matches the chunks using [match](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/match) method and returns an array of objects contains the final results.
 
-### find(options, callback)
+## API
 
-`options`
+## find(options)
 
-* `path` file path,
-* `request` array of [regex](https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions) that will be matched in file
-* `encoding`  read stream encoding (default: `utf8`)
-* `join` number of chunk combined (default: 2), increasing the number will widen the matching chunk boundaries
+`options` object contains:
 
-The callback gets two arguments `(err, report)`.
+- `path: string` file path,
+- `request: array` array of [regex](https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions) that will be matched in file
+- `encoding:? string` read stream encoding (default: `utf8`)
+- `join: string` number of chunk combined (default: 2), increasing the number will widen the matching chunk boundaries
 
-`report`  An array of objects. Each element contains three objects:
+The results is promise contains `report: array` An array of objects. Each element contains three keys:
 
-* `isFound` searching result
-* `reg` regex sent
-* `match` matching result. An array if there are results otherwise returns null. for more see [String.prototype.match()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match)
+- `isFound: Boolean` search result
+- `reg: string` regex sent in request
+- `match: array` matching result. An array if there are results otherwise returns null. for more see [String.prototype.match()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match)
 
-Using find-in
-----------
+### Examples
 
-```javascript
-const find = require('find-in')
+```js
+const find = require("find-in");
 
 // let's create some request to search for it in our file.
-const req = [
-  /old/g,
-  /new/g,
-]
+const req = [/old/g, /new/g];
 
-find({ path: '/path1/path2/fileName', request: req }, (err, report) => {
-  //
-  [
-    {
-      isFound: true,
-      reg:/old/g,
-      match: ['old'] // the result of matching
-    },
-    { isFound: false, // not found so it wasn't changed
-      reg: /new/g,
-      match: null
-    },
-   ]
-  //
-});
-```
-Or you can check specific result as following.
+const report = await find({ path: "/path/to/fileName", request: req });
 
-```javascript
-find({ path: '/path1/path2/fileName', request: [ph0, ph1, p2, ph3] }, (err, report) => {
-  if(report[2].isFound){
-    console.log('p2 was found');
-    // do something
-  } else {
-    console.log('not found');
-    // do something else
-  }
-});
+// > report:
+//
+// [
+//   {
+//     isFound: true,
+//     reg: /old/g,
+//     match: ["old"], // the result of matching
+//   },
+//   {
+//     isFound: false, // not found so it wasn't changed
+//     reg: /new/g,
+//     match: null,
+//   },
+// ];
 ```
 
-Tests
------
+Or you can check a specific result as following.
+
+```js
+const report = await find({
+  path: "/path/to/fileName",
+  request: [phrase0, phrase1, phrase2, phrase3],
+});
+
+if (report[2].isFound) {
+  console.log("found phrase2!");
+  // do something
+} else {
+  console.log("phrase2 is not found!");
+  // do something else
+}
+```
+
+## Tests
 
 ```sh
-$ npm test
+yarn test
 ```
 
-License
--------
+### Related projects
 
-This project is licensed under the [MIT License](https://github.com/Jimmy02020/find-in/blob/master/LICENSE)
+- [textics](https://github.com/jalal246/textics-stream) &
+  [textics-stream](https://github.com/jalal246/textics) - counts lines, words, chars and spaces for a given string.
+
+- [packageSorter](https://github.com/jalal246/packageSorter) - Sorting packages
+  for monorepos production.
+
+- [builderz](https://github.com/jalal246/builderz) - Building your project with zero config.
+
+- [corename](https://github.com/jalal246/corename) - Extracts package name.
+
+- [get-info](https://github.com/jalal246/get-info) - Utility functions for
+  projects production.
+
+- [move-position](https://github.com/jalal246/move-position) - Moves element in
+  given array form index-A to index-B.
+
+## License
+
+This project is licensed under the [MIT License](https://github.com/jalal246/find-in/blob/master/LICENSE)

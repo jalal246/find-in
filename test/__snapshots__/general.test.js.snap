@@ -1,0 +1,185 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing data doesn't exist in the file returns isFound false because there's not matching 1`] = `
+Array [
+  Object {
+    "isFound": false,
+    "match": null,
+    "reg": /hi guys!/g,
+  },
+  Object {
+    "isFound": false,
+    "match": null,
+    "reg": /what is up\\?/,
+  },
+  Object {
+    "isFound": false,
+    "match": null,
+    "reg": "is everything ok?",
+  },
+  Object {
+    "isFound": false,
+    "match": null,
+    "reg": "good, glad to here that from you",
+  },
+  Object {
+    "isFound": false,
+    "match": null,
+    "reg": /don't worry/,
+  },
+  Object {
+    "isFound": false,
+    "match": null,
+    "reg": "this test",
+  },
+  Object {
+    "isFound": false,
+    "match": null,
+    "reg": "cannot be last forever",
+  },
+  Object {
+    "isFound": false,
+    "match": null,
+    "reg": /right\\?/,
+  },
+  Object {
+    "isFound": false,
+    "match": null,
+    "reg": /what!!/gi,
+  },
+]
+`;
+
+exports[`Testing data spread in file replaces requested strings 1`] = `
+Array [
+  Object {
+    "isFound": true,
+    "match": Array [
+      "hi guys!",
+    ],
+    "reg": /hi guys!/g,
+  },
+  Object {
+    "isFound": true,
+    "match": Array [
+      "what is up",
+    ],
+    "reg": /what is up\\?/,
+  },
+  Object {
+    "isFound": true,
+    "match": Array [
+      "is everything ok",
+    ],
+    "reg": "is everything ok?",
+  },
+  Object {
+    "isFound": true,
+    "match": Array [
+      "good, glad to here that from you",
+    ],
+    "reg": "good, glad to here that from you",
+  },
+  Object {
+    "isFound": true,
+    "match": Array [
+      "don't worry",
+    ],
+    "reg": /don't worry/,
+  },
+  Object {
+    "isFound": true,
+    "match": Array [
+      "this test",
+    ],
+    "reg": "this test",
+  },
+  Object {
+    "isFound": true,
+    "match": Array [
+      "cannot be last forever",
+    ],
+    "reg": "cannot be last forever",
+  },
+  Object {
+    "isFound": true,
+    "match": Array [
+      "right",
+    ],
+    "reg": /right\\?/,
+  },
+  Object {
+    "isFound": false,
+    "match": null,
+    "reg": /what!!/gi,
+  },
+]
+`;
+
+exports[`Testing stacked data in the file returns isFound false because there's not matching 1`] = `
+Array [
+  Object {
+    "isFound": true,
+    "match": Array [
+      "hi guys!",
+    ],
+    "reg": /hi guys!/g,
+  },
+  Object {
+    "isFound": true,
+    "match": Array [
+      "what is up",
+    ],
+    "reg": /what is up\\?/,
+  },
+  Object {
+    "isFound": true,
+    "match": Array [
+      "is everything ok",
+    ],
+    "reg": "is everything ok?",
+  },
+  Object {
+    "isFound": true,
+    "match": Array [
+      "good, glad to here that from you",
+    ],
+    "reg": "good, glad to here that from you",
+  },
+  Object {
+    "isFound": true,
+    "match": Array [
+      "don't worry",
+    ],
+    "reg": /don't worry/,
+  },
+  Object {
+    "isFound": true,
+    "match": Array [
+      "this test",
+    ],
+    "reg": "this test",
+  },
+  Object {
+    "isFound": true,
+    "match": Array [
+      "cannot be last forever",
+    ],
+    "reg": "cannot be last forever",
+  },
+  Object {
+    "isFound": true,
+    "match": Array [
+      "right",
+    ],
+    "reg": /right\\?/,
+  },
+  Object {
+    "isFound": true,
+    "match": Array [
+      "what!!",
+    ],
+    "reg": /what!!/gi,
+  },
+]
+`;

@@ -1,201 +1,180 @@
-/* eslint-env mocha */
-import chai from 'chai';
-import faker from 'faker';
-import fs from 'fs';
-import path from 'path';
+const fs = require("fs");
+const path = require("path");
 
-import find from '../src';
+const faker = require("faker");
 
-const expect = chai.expect;
+const find = require("../src/find");
 
-const fileExist = path.join(__dirname, 'tempFileExistForTest.txt');
-const fwithoutInfo = path.join(__dirname, '.env.no.info.test');
-const fwitInfoStack = path.join(__dirname, 'info.stk.docx');
-const fwithInfoSpreaded = path.join(__dirname, 'info.sp.txt');
+const fileWithoutInfo = path.join(__dirname, ".env.no.info.test");
+const fileWithStackedData = path.join(__dirname, "info.stk.docx");
+const fileWithInfoSpread = path.join(__dirname, "info.sp.txt");
 
-const LABLE1 = 'hi guys!';
-const LABLE2 = 'what is up?';
-const LABLE3 = 'is everything ok?';
-const LABLE4 = 'good, glad to here that from you';
-const LABLE5 = 'dont worry';
-const LABLE6 = 'this test';
-const LABLE7 = 'cannot be last forever';
-const LABLE8 = 'right?';
-const LABLE9 = 'what!!';
+const LABEL1 = "hi guys!";
+const LABEL2 = "what is up?";
+const LABEL3 = "is everything ok?";
+const LABEL4 = "good, glad to here that from you";
+const LABEL5 = "don't worry";
+const LABEL6 = "this test";
+const LABEL7 = "cannot be last forever";
+const LABEL8 = "right?";
+const LABEL9 = "what!!";
 
-const pharse1 = new RegExp(LABLE1, 'g');
-const pharse2 = new RegExp(`${LABLE2}`);
-const pharse3 = LABLE3;
-const pharse4 = LABLE4;
-const pharse5 = new RegExp(`${LABLE5}`);
-const pharse6 = LABLE6;
-const pharse7 = LABLE7;
-const pharse8 = new RegExp(`${LABLE8}`);
-const pharse9 = /what!!/ig;
+const phrase1 = new RegExp(LABEL1, "g");
+const phrase2 = new RegExp(`${LABEL2}`);
+const phrase3 = LABEL3;
+const phrase4 = LABEL4;
+const phrase5 = new RegExp(`${LABEL5}`);
+const phrase6 = LABEL6;
+const phrase7 = LABEL7;
+const phrase8 = new RegExp(`${LABEL8}`);
+const phrase9 = /what!!/gi;
 
 const request = [
-  pharse1,
-  pharse2,
-  pharse3,
-  pharse4,
-  pharse5,
-  pharse6,
-  pharse7,
-  pharse8,
-  pharse9,
+  phrase1,
+  phrase2,
+  phrase3,
+  phrase4,
+  phrase5,
+  phrase6,
+  phrase7,
+  phrase8,
+  phrase9,
 ];
 
-describe('read and replace stream function', () => {
-  describe('invalid parameters', () => {
-    it('creates file to continue validation test', () => {
-      fs.closeSync(fs.openSync(fileExist, 'w'));
-    });
-    it('throws error empty args', () => {
-      // console.log(find());
-      expect(() => find()).to.throw(Error);
-    });
-    it('throws error for invalid callback function', () => {
-      // console.log(find(fwithInfoSpreaded, [], 'test'));
-      expect(() => find(fileExist, [], 'test')).to.throw(Error);
-    });
-    describe('return callback error msg callback error', () => {
-      it('for invalid directory', (done) => {
-        find({ path: 'fileExist' }, (err) => {
-          // console.log(err);
-          expect(err).to.be.an('error');
-          done();
-        });
-      });
-      it('for invalid array of objects', (done) => {
-        find({ path: fileExist }, (err) => {
-          // console.log(err);
-          expect(err).to.be.an('error');
-          done();
-        });
-      });
-      it('for empty array of objects', (done) => {
-        find({ path: fileExist, request: [] }, (err) => {
-          // console.log(err);
-          expect(err).to.be.an('error');
-          done();
-        });
-      });
-      it('for invalid reg [regex or string]', (done) => {
-        find({ path: fileExist, request: [8] }, (err) => {
-          // console.log(err);
-          expect(err).to.be.an('error');
-          done();
-        });
-      });
-      // it('for invalid replace pharse', (done) => {
-      //   find(fileExist, [{ reg: /d/g, match: 9 }], (err) => {
-      //     // console.log(err);
-      //     expect(err).to.be.an('error');
-      //     done();
-      //   });
-      // });
-      it('delete test file that was created for validation test', () => {
-        fs.unlinkSync(fileExist);
-      });
-    });
+describe("Testing invalid input", () => {
+  it("throws error for empty args", async () => {
+    await expect(find()).rejects.toThrow("Invalid input");
   });
-  describe('info spreaded in file', () => {
-    it('create file with fake info', () => {
-      // init file with params spreaded.
-      const ws1 = fs.createWriteStream(fwithInfoSpreaded);
-      for (let i = 0; i < 10000; i += 1) {
-        if (i === 1000) {
-          ws1.write(` ${LABLE1} `);
-        } else if (i === 2000) {
-          ws1.write(` ${LABLE2} `);
-        } else if (i === 3000) {
-          ws1.write(` ${LABLE3} `);
-        } else if (i === 4000) {
-          ws1.write(` ${LABLE4} `);
-        } else if (i === 5000) {
-          ws1.write(` ${LABLE5} `);
-        } else if (i === 6000) {
-          ws1.write(` ${LABLE6} `);
-        } else if (i === 7000) {
-          ws1.write(` ${LABLE7} `);
-        } else if (i === 800) {
-          ws1.write(` ${LABLE8} `);
-        } else if (i === 800) {
-          ws1.write(` ${LABLE9} `);
-        } else {
-          ws1.write(`${faker.lorem.paragraphs()}\n`);
-        }
-      }
-      ws1.end();
-    });
-    it('replaces spreaded strings', (done) => {
-      find({ path: fwithInfoSpreaded, request }, (err, report) => {
-        // console.log(report);
-        expect(report[0]).to.deep.equal({
-          isFound: true, reg: new RegExp(LABLE1, 'g'), match: [LABLE1],
-        });
-        done();
-      });
-    });
-    it('delete test file', (done) => {
-      fs.unlinkSync(fwithInfoSpreaded);
-      done();
-    });
+
+  it("throws error when no request is provided", async () => {
+    await expect(find({})).rejects.toThrow("Invalid input");
   });
-  describe('testing in not matching info file', () => {
-    it('create file with fake info', () => {
-      // init file with params spreaded.
-      const ws2 = fs.createWriteStream(fwithoutInfo);
-      for (let i = 0; i < 10000; i += 1) {
-        ws2.write(`${faker.lorem.paragraphs()}\n`);
-      }
-      ws2.end();
-    });
-    it('returns isFound false beacuse of not matching', (done) => {
-      find({ path: fwithoutInfo, request }, (err, report) => {
-        expect(report[0]).to.deep.equal({
-          isFound: false, reg: new RegExp(LABLE1, 'g'), match: null,
-        });
-        expect(report[7]).to.deep.equal({
-          isFound: false, reg: new RegExp(`${LABLE8}`), match: null,
-        });
-        done();
-      });
-    });
-    it('delete test file', (done) => {
-      fs.unlinkSync(fwithoutInfo);
-      done();
-    });
+
+  it("throws error when request is not an array", async () => {
+    await expect(find({ request: "" })).rejects.toThrow("Invalid input");
   });
-  describe('testing in stack info file', () => {
-    it('create file with fake info', () => {
-      // init file with params spreaded.
-      const ws3 = fs.createWriteStream(fwitInfoStack);
-      ws3.write(` ${LABLE1} `);
-      ws3.write(` ${LABLE2} `);
-      ws3.write(` ${LABLE3} `);
-      ws3.write(` ${LABLE4} `);
-      ws3.write(` ${LABLE5} `);
-      ws3.write(` ${LABLE6} `);
-      ws3.write(` ${LABLE7} `);
-      ws3.write(` ${LABLE8} `);
-      ws3.write(` ${LABLE9} `);
-      for (let i = 0; i < 10000; i += 1) {
-        ws3.write(`${faker.lorem.paragraphs()}\n`);
+
+  it("throws error when for invalid regex", async () => {
+    await expect(find({ request: [9] })).rejects.toThrow("Invalid request");
+  });
+
+  it("throws error when no path in applied", async () => {
+    await expect(find({ request: ["Hi"] })).rejects.toThrow("Invalid path");
+  });
+});
+
+describe("Testing data spread in file", () => {
+  beforeAll(() => {
+    const ws1 = fs.createWriteStream(fileWithInfoSpread);
+
+    for (let i = 0; i < 10000; i += 1) {
+      if (i === 1000) {
+        ws1.write(` ${LABEL1} `);
+      } else if (i === 2000) {
+        ws1.write(` ${LABEL2} `);
+      } else if (i === 3000) {
+        ws1.write(` ${LABEL3} `);
+      } else if (i === 4000) {
+        ws1.write(` ${LABEL4} `);
+      } else if (i === 5000) {
+        ws1.write(` ${LABEL5} `);
+      } else if (i === 6000) {
+        ws1.write(` ${LABEL6} `);
+      } else if (i === 7000) {
+        ws1.write(` ${LABEL7} `);
+      } else if (i === 800) {
+        ws1.write(` ${LABEL8} `);
+      } else if (i === 800) {
+        ws1.write(` ${LABEL9} `);
+      } else {
+        ws1.write(`${faker.lorem.paragraphs()}\n`);
       }
-      ws3.end();
+    }
+    ws1.end();
+  });
+
+  afterAll(() => {
+    fs.unlinkSync(fileWithInfoSpread);
+  });
+
+  it("replaces requested strings", async () => {
+    const report = await find({ path: fileWithInfoSpread, request });
+
+    expect(Array.isArray(report)).toBeTruthy();
+
+    expect(report[0]).toStrictEqual({
+      isFound: true,
+      reg: new RegExp(LABEL1, "g"),
+      match: [LABEL1],
     });
-    it('returns isFound false beacuse of not matching', (done) => {
-      find({ path: fwitInfoStack, request, join: 2 }, (err, report) => {
-        expect(report[0]).to.deep.equal({
-          isFound: true, reg: new RegExp(LABLE1, 'g'), match: [LABLE1],
-        });
-        done();
-      });
+
+    expect(report).toMatchSnapshot();
+  });
+});
+
+describe("Testing data doesn't exist in the file", () => {
+  beforeAll(() => {
+    const ws2 = fs.createWriteStream(fileWithoutInfo);
+    for (let i = 0; i < 10000; i += 1) {
+      ws2.write(`${faker.lorem.paragraphs()}\n`);
+    }
+    ws2.end();
+  });
+
+  afterAll(() => {
+    fs.unlinkSync(fileWithoutInfo);
+  });
+
+  it("returns isFound false because there's not matching", async () => {
+    const report = await find({ path: fileWithoutInfo, request });
+
+    expect(report[0]).toStrictEqual({
+      isFound: false,
+      reg: new RegExp(LABEL1, "g"),
+      match: null,
     });
-    it('delete test file', (done) => {
-      fs.unlinkSync(fwitInfoStack);
-      done();
+
+    expect(report[7]).toStrictEqual({
+      isFound: false,
+      reg: new RegExp(`${LABEL8}`),
+      match: null,
     });
+
+    expect(report).toMatchSnapshot();
+  });
+});
+
+describe("Testing stacked data in the file", () => {
+  beforeAll(() => {
+    const ws3 = fs.createWriteStream(fileWithStackedData);
+    ws3.write(` ${LABEL1} `);
+    ws3.write(` ${LABEL2} `);
+    ws3.write(` ${LABEL3} `);
+    ws3.write(` ${LABEL4} `);
+    ws3.write(` ${LABEL5} `);
+    ws3.write(` ${LABEL6} `);
+    ws3.write(` ${LABEL7} `);
+    ws3.write(` ${LABEL8} `);
+    ws3.write(` ${LABEL9} `);
+    for (let i = 0; i < 10000; i += 1) {
+      ws3.write(`${faker.lorem.paragraphs()}\n`);
+    }
+    ws3.end();
+  });
+
+  afterAll(() => {
+    fs.unlinkSync(fileWithStackedData);
+  });
+
+  it("returns isFound false because there's not matching", async () => {
+    const report = await find({ path: fileWithStackedData, request, join: 2 });
+
+    expect(report[0]).toStrictEqual({
+      isFound: true,
+      reg: new RegExp(LABEL1, "g"),
+      match: [LABEL1],
+    });
+
+    expect(report).toMatchSnapshot();
   });
 });
