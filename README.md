@@ -37,7 +37,7 @@ const find = require("find-in");
 // let's create some request to search for it in our file.
 const req = [/old/g, /new/g];
 
-const report = await find({ path: "/path1/path2/fileName", request: req });
+const report = await find({ path: "/path/to/fileName", request: req });
 
 // > report:
 //
@@ -59,7 +59,7 @@ Or you can check a specific result as following.
 
 ```js
 const report = await find({
-  path: "/path1/path2/fileName",
+  path: "/path/to/fileName",
   request: [phrase0, phrase1, phrase2, phrase3],
 });
 
@@ -80,4 +80,4 @@ yarn test
 
 ## License
 
-This project is licensed under the [MIT License](https://github.com/Jimmy02020/find-in/blob/master/LICENSE)
+This project is licensed under the [MIT License](https://github.com/jalal246/find-in/blob/master/LICENSE)
