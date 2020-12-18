@@ -81,15 +81,14 @@ yarn test
 - [textics](https://github.com/jalal246/textics-stream) &
   [textics-stream](https://github.com/jalal246/textics) - counts lines, words, chars and spaces for a given string.
 
+- [replace-in](https://github.com/jalal246/replace-in) - Replace text in a given file.
+
 - [packageSorter](https://github.com/jalal246/packageSorter) - Sorting packages
   for monorepos production.
 
 - [builderz](https://github.com/jalal246/builderz) - Building your project with zero config.
 
 - [corename](https://github.com/jalal246/corename) - Extracts package name.
-
-- [get-info](https://github.com/jalal246/get-info) - Utility functions for
-  projects production.
 
 - [move-position](https://github.com/jalal246/move-position) - Moves element in
   given array form index-A to index-B.
