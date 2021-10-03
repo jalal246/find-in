@@ -40,6 +40,6 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.23.4",
     "faker": "^5.5.3",
-    "jest": "^26.6.3"
+    "jest": "^27.2.4"
   }
 }
